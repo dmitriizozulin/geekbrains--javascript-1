@@ -1,62 +1,89 @@
 'use strict'
 
-// Tf = (9 / 5) * Tc + 32
-const t_celsius = 30;
-const t_fahrenheit = (9 / 5) * t_celsius + 32;
-alert(t_fahrenheit);
+{
+	let a = 1, b = 1, c, d;
+	c = ++a; // Значение a увеличивается на 1, затем присваевается c
+	alert(c); // 2
 
-const name = 'Василий';
-const admin = name;
-console.log(admin);
+	d = b++; // Значение b присваевается d, затем значение b увеличивается на 1
+	alert(d); // 1
 
-let result = 10 + 10 + "10";
-console.log(result);
-/*
-	1. 10 прибавляем к 10 получаем 20
-	2. 20 преобразуется в строку и соединяется с "10" получается "2010"
-	3. Значение "2010" присваевается переменной result
-	4. С помощью console.log() выводим result в консоль
-*/
+	c = 2 + ++a; // Значение a увеличивается на 1, затем к нему прибавляется 2, затем это присваевается c
+	alert(c); // 5
 
-let result_2 = 10 + "10" + 10;
-console.log(result_2);
-/*
-	1. 10 преобразуется в строку и соединяется с "10" получается "1010"
-	2. 10 преобразуется в строку и соединяется с "1010" получается "101010"
-	3. Значение "101010" присваевается переменной result_2
-	4. С помощью console.log() выводим result_2 в консоль
-*/
+	d = 2 + b++; // К значению b прибавляется 2, затем это присваевается d, затем значение b увеличивается на 1
+	alert(d); // 4
 
-let result_3 = 10 + 10 + +"10";
-console.log(result_3);
-/*
-	1. "10" преобразуется в число и прибавляется к 10 получается 20
-	2. 10 прибавляется к 20 получается 30
-	3. Значение 30 присваевается переменной result_3
-	4. С помощью console.log() выводим result_3 в консоль
-*/
+	alert(a); // 3
+	alert(b); // 3
+}
 
-let result_4 = 10 / -"";
-console.log(result_4);
-/*
-	1. -"" преобразуется в -0
-	2. 10 делится на -0 получается -Infinity
-	3. Значение -Infinity присваевается переменной result_4
-	4. С помощью console.log() выводим result_4 в консоль
-*/
 
-let result_5 = 10 / +"2,5";
-console.log(result_5);
-/*
-	1. -"2,5" преобразуется в NaN
-	2. 10 делится на NaN получается NaN
-	3. Значение NaN присваевается переменной result_5
-	4. С помощью console.log() выводим result_5 в консоль
-*/
+{
+	let a = 2;
+	let x = 1 + (a *= 2);
 
-// let mode = "normal"; // - Верно
-// let my_valu3 = 102; // - Верно
-// let 3my_value3 = "102"; // - Не верно
-// let __hello__ = "world"; // - Верно
-// let $$$ = "money"; // - Верно
-// let!0_world = true; // - Не верно
+	/*
+		1. Переменной a присваевается значение 2
+		2. Значение a умножается на 2, результат присваевается a
+		3. К значению a прибавляется 1, результат присваевается x
+
+		a = 4
+		x = 5
+	*/
+}
+
+
+{
+	let a = 12, b = -18;
+
+	if (a >= 0 && b >= 0) console.log(a - b);
+	else if (a < 0 && b < 0) console.log(a * b);
+	else if (Math.sign(a) !== Math.sign(b)) console.log(a + b);
+}
+
+{
+	function add(a, b) { return +a + +b; }
+	function sub(a, b) { return +a - +b; }
+	function mul(a, b) { return +a * +b; }
+	function div(a, b) { return +a / +b; }
+
+	function mathOperation(a, b, op) {
+		switch (String(op).toLowerCase()) {
+			case "сложение": return add(a, b);
+			case "вычитание": return sub(a, b);
+			case "умножение": return mul(a, b);
+			case "деление": return div(a, b);
+			default: console.error("Оператор не найден"); return NaN;
+		}
+	}
+
+	console.log(mathOperation(5, 3, "умножение"));
+}
+
+{
+	const val = prompt("Введите сумму, на которую Вы хотите пополнить счет").trim();
+
+	switch (val[val.length - 1]) { // Последняя цифра
+		case '1': {
+			if (val.slice(val.length - 2) !== '11') { // Последние 2 цифры не равны 11?
+				alert(`Ваша сумма в ${val} рубль зачислена`);
+				break;
+			}
+		}
+
+		case '2':
+		case '3':
+		case '4': {
+			if (
+				val.length >= 3 && +val.slice(val.length - 2) > 20 // Число 3х значное и последние 2 цифры больше 20?
+				|| val.length == 1
+			) {
+				alert(`Ваша сумма в ${val} рубля зачислена`);
+				break;
+			}
+		}
+
+		default: alert(`Ваша сумма в ${val} рублей зачислена`);
+	}
+}
