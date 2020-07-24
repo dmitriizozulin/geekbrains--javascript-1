@@ -1,102 +1,127 @@
-'use strict'
+'use strict';
 
-for (let i = 0; i <= 10; i++) {
-	if (i === 0) {
-		console.log(i, '- это ноль');
-	} else if (i % 2 == 0) {
-		console.log(i, '- четное число');
-	} else {
-		console.log(i, '- нечетное число');
+function getDigits(num) {
+	if (!Number.isInteger(num) || num > 999 || num < 0) {
+		console.log("Неверные данные!");
+		return {};
 	}
+
+	return {
+		hundreds: Math.floor(num / 100),
+		tens: Math.floor(num / 10) % 10,
+		units: num % 10,
+	};
+}
+console.log(getDigits(123));
+
+// -----------------------------------------------------------
+
+{ // ES5
+	function Product(name, price) {
+		this.name = name;
+		this.price = price;
+	}
+
+	Product.prototype.make25PercentDiscount = function () {
+		this.price = this.price - (this.price * 25 / 100);
+	};
+
+	const product = new Product('Cheese', 200);
+	product.make25PercentDiscount();
+
+	console.log(product);
 }
 
-const post = {
-	author: "John", //вывести этот текст
-	postId: 23,
-	comments: [
-		{
-			userId: 10,
-			userName: "Alex",
-			text: "lorem ipsum",
-			rating: {
-				likes: 10,
-				dislikes: 2 //вывести это число
-			}
-		},
-		{
-			userId: 5, //вывести это число
-			userName: "Jane",
-			text: "lorem ipsum 2", //вывести этот текст
-			rating: {
-				likes: 3,
-				dislikes: 1
-			}
-		},
-	]
-}
-console.log(post.author);
-console.log(post.comments[0].rating.dislikes);
-console.log(post.comments[1].userId);
-console.log(post.comments[1].text);
-
-const products = [
-	{
-		id: 3,
-		price: 200,
-	},
-	{
-		id: 4,
-		price: 900,
-	},
-	{
-		id: 1,
-		price: 1000,
-	},
-];
-
-for (let product of products) {
-	product.price *= (1 - 0.15)
-}
-console.log(products);
-
-{
-	let products = [
-		{
-			id: 3,
-			price: 127,
-			photos: [
-				"1.jpg",
-				"2.jpg",
-			]
-		},
-		{
-			id: 5,
-			price: 499,
-			photos: []
-		},
-		{
-			id: 10,
-			price: 26,
-			photos: [
-				"3.jpg"
-			]
-		},
-		{
-			id: 8,
-			price: 78,
-		},
-	];
-
-	products = products.filter(item => {
-		if (item.photos) {
-			return item.photos.length > 0
+{ // ES6
+	class Product {
+		constructor(name, price) {
+			this.name = name;
+			this.price = price;
 		}
-	});
-	products.sort((a, b) => a.price - b.price);
-	console.log(products);
+
+		make25PercentDiscount() {
+			this.price = this.price - (this.price * 25 / 100);
+		}
+	}
+
+	const product = new Product('Milk', 100);
+	product.make25PercentDiscount();
+
+	console.log(product);
 }
 
-for (let h = 0, word = ''; h < 20; h++) {
-	word += 'x';
-	console.log(word);
+// -----------------------------------------------------------
+
+{ // ES5
+	function Post(author, text, date) {
+		this.author = author;
+		this.text = text;
+		this.date = date;
+	}
+
+	Post.prototype.edit = function (text) {
+		this.text = text;
+	}
+
+	const post = new Post('Michael', 'Hello', new Date());
+	console.log(post);
+	post.edit('World!');
+	console.log(post);
+
+
+	function AttachedPost(author, text, date) {
+		Post.call(this, author, text, date);
+		this.highlighted = false;
+	}
+
+	AttachedPost.prototype = Object.create(Post.prototype);
+	AttachedPost.prototype.constructor = AttachedPost;
+
+	AttachedPost.prototype.makeTextHighlighted = function () {
+		this.highlighted = true;
+	}
+
+	const attached = new AttachedPost('Alex', 'Lorem ipsum dolor sit', new Date());
+	console.log(attached);
+	attached.makeTextHighlighted();
+	attached.edit('amet consectetur, adipisicing');
+	console.log(attached);
+}
+
+
+{ // ES6
+	class Post {
+		constructor(author, text, date) {
+			this.author = author;
+			this.text = text;
+			this.date = date;
+		}
+
+		edit(text) {
+			this.text = text;
+		}
+	}
+
+	const post = new Post('Michael', 'Hello', new Date());
+	console.log(post);
+	post.edit('World!');
+	console.log(post);
+
+
+	class AttachedPost extends Post {
+		constructor(name, text, date) {
+			super(name, text, date);
+			this.highlighted = false;
+		}
+
+		makeTextHighlighted() {
+			this.highlighted = true;
+		}
+	}
+
+	const attached = new AttachedPost('Alex', 'Lorem ipsum dolor sit', new Date());
+	console.log(attached);
+	attached.makeTextHighlighted();
+	attached.edit('amet consectetur, adipisicing');
+	console.log(attached);
 }
