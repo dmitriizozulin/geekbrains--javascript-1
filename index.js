@@ -1,127 +1,143 @@
 'use strict';
 
-function getDigits(num) {
-	if (!Number.isInteger(num) || num > 999 || num < 0) {
-		console.log("Неверные данные!");
-		return {};
-	}
+const showModal = document.querySelector('.showModal');
+const closeModal = document.querySelector('.closeModal');
 
-	return {
-		hundreds: Math.floor(num / 100),
-		tens: Math.floor(num / 10) % 10,
-		units: num % 10,
+showModal.addEventListener('click', () => {
+	document.querySelector('.modal').removeAttribute('hidden');
+});
+
+closeModal.addEventListener('click', () => {
+	document.querySelector('.modal').setAttribute('hidden', 'hidden');
+});
+
+const products = document.querySelectorAll('.product');
+
+products.forEach(product => {
+	const button = product.querySelector('.product__show-more');
+
+	button.addEventListener('click', () => {
+		product.querySelector('.product__img').toggleAttribute('hidden');
+		product.querySelector('.product__desc').toggleAttribute('hidden');
+
+		if (button.textContent == 'Подробнее') {
+			button.textContent = 'Отмена';
+		} else {
+			button.textContent = 'Подробнее';
+		}
+	});
+})
+
+const generateChessBoard = () => {
+	const getTile = () => {
+		const tile = document.createElement('div');
+		tile.classList.add('chess__tile')
+		tile.style.cssText = `
+			background-color: #fff;
+			width: 50px;
+			height: 50px;
+		`;
+
+		return tile;
 	};
-}
-console.log(getDigits(123));
 
-// -----------------------------------------------------------
+	const getTileDark = () => {
+		const tile__dark = getTile();
+		tile__dark.classList.add('chess__tile--dark');
+		tile__dark.style.cssText = 'background-color: #333';
 
-{ // ES5
-	function Product(name, price) {
-		this.name = name;
-		this.price = price;
-	}
-
-	Product.prototype.make25PercentDiscount = function () {
-		this.price = this.price - (this.price * 25 / 100);
+		return tile__dark;
 	};
 
-	const product = new Product('Cheese', 200);
-	product.make25PercentDiscount();
+	const getCol = (color) => {
+		return color == 'black' ? getTileDark() : getTile();
+	};
 
-	console.log(product);
-}
+	const getRow = (startColor, rowNum) => {
+		const row = document.createElement('div');
+		row.classList.add('chess__row');
+		row.style.cssText = `
+			display: inline-grid;
+			grid-template-columns: repeat(9, 50px);
+		`;
 
-{ // ES6
-	class Product {
-		constructor(name, price) {
-			this.name = name;
-			this.price = price;
+		const rowInfo = getTile();
+		rowInfo.textContent = rowNum;
+		rowInfo.style.cssText = `
+			display: inline-grid;
+			place-items: center;
+			font-weight: bold;
+			border-right: 1px solid #333;
+		`;
+		row.appendChild(rowInfo);
+
+		let color = startColor;
+		for (let w = 0; w < 8; w++) {
+			row.appendChild(getCol(color));
+
+			if (color == 'white') {
+				color = 'black';
+			} else {
+				color = 'white';
+			}
 		}
 
-		make25PercentDiscount() {
-			this.price = this.price - (this.price * 25 / 100);
-		}
-	}
+		return row;
+	};
 
-	const product = new Product('Milk', 100);
-	product.make25PercentDiscount();
+	const getColInfo = () => {
+		const row = document.createElement('div');
+		row.classList.add('chess__row');
+		row.style.cssText = `
+			display: inline-grid;
+			grid-template-columns: repeat(9, 50px);
+		`;
 
-	console.log(product);
-}
+		row.appendChild(getTile());
 
-// -----------------------------------------------------------
+		const colChars = 'ABCDEFGH';
 
-{ // ES5
-	function Post(author, text, date) {
-		this.author = author;
-		this.text = text;
-		this.date = date;
-	}
+		for (let w = 0; w < 8; w++) {
+			const colInfo = getTile();
+			colInfo.textContent = colChars[w];
+			colInfo.style.cssText = `
+				display: inline-grid;
+				place-items: center;
+				font-weight: bold;
+				border-top: 1px solid #333;
+			`;
 
-	Post.prototype.edit = function (text) {
-		this.text = text;
-	}
-
-	const post = new Post('Michael', 'Hello', new Date());
-	console.log(post);
-	post.edit('World!');
-	console.log(post);
-
-
-	function AttachedPost(author, text, date) {
-		Post.call(this, author, text, date);
-		this.highlighted = false;
-	}
-
-	AttachedPost.prototype = Object.create(Post.prototype);
-	AttachedPost.prototype.constructor = AttachedPost;
-
-	AttachedPost.prototype.makeTextHighlighted = function () {
-		this.highlighted = true;
-	}
-
-	const attached = new AttachedPost('Alex', 'Lorem ipsum dolor sit', new Date());
-	console.log(attached);
-	attached.makeTextHighlighted();
-	attached.edit('amet consectetur, adipisicing');
-	console.log(attached);
-}
-
-
-{ // ES6
-	class Post {
-		constructor(author, text, date) {
-			this.author = author;
-			this.text = text;
-			this.date = date;
+			row.appendChild(colInfo);
 		}
 
-		edit(text) {
-			this.text = text;
-		}
+		return row;
 	}
 
-	const post = new Post('Michael', 'Hello', new Date());
-	console.log(post);
-	post.edit('World!');
-	console.log(post);
+	const getBoard = () => {
+		const board = document.createElement('div');
+		board.classList.add('chess__board');
+		board.style.cssText = `
+			display: inline-grid;
+			grid-template-rows: repeat(8, 50px);
+			border: 1px solid #333;
+			margin: 20px;
+		`;
 
+		for (let h = 0, color = 'white'; h < 8; h++) {
+			board.appendChild(getRow(color, 8 - h));
 
-	class AttachedPost extends Post {
-		constructor(name, text, date) {
-			super(name, text, date);
-			this.highlighted = false;
+			if (color == 'white') {
+				color = 'black';
+			} else {
+				color = 'white';
+			}
 		}
 
-		makeTextHighlighted() {
-			this.highlighted = true;
-		}
-	}
+		board.appendChild(getColInfo())
 
-	const attached = new AttachedPost('Alex', 'Lorem ipsum dolor sit', new Date());
-	console.log(attached);
-	attached.makeTextHighlighted();
-	attached.edit('amet consectetur, adipisicing');
-	console.log(attached);
-}
+		return board;
+	};
+
+	document.body.appendChild(getBoard());
+};
+generateChessBoard();
