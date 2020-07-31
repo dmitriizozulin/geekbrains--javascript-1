@@ -1,0 +1,40 @@
+body {
+  display: flex;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+.market {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 70%;
+  width: 70%;
+  padding: 20px;
+}
+
+.market__item {
+  list-style-type: none;
+  margin-right: 16px;
+  flex-basis: 300px;
+}
+
+.market__item:last-child {
+  margin-right: 0;
+}
+
+.cart {
+  box-sizing: border-box;
+  border: 1px solid #cccccc;
+  border-collapse: collapse;
+  width: 30%;
+  margin: 20px;
+}
+
+.cart td,
+.cart th {
+  border: 1px solid #dddddd;
+}
