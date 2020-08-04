@@ -111,6 +111,10 @@ class Board {
     return this.boardEl.querySelector('.food').classList.contains('snakeBody');
   }
 
+  /**
+   * Метод проверяет наступила ли змея на себя
+   * @returns {boolean} true если змея находится на себе, иначе false
+   */
   isHeadOnBody() {
     let snakeHead = this.snake.body[0];
     let snakeBody = this.snake.body;

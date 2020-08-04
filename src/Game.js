@@ -64,7 +64,8 @@ class Game {
    * 1. перемещение змейки
    * 2. проверяет проиграна/выиграна ли игра
    * 3. увеличивает размер змейки если она ест еду
-   * 4. заново отрисовывает положение змейки и еды
+   * 4. переносит змею на другую сторону, если она вошла в стену
+   * 5. заново отрисовывает положение змейки и еды
    */
   doTick() {
     this.snake.performStep();
@@ -73,6 +74,9 @@ class Game {
     }
     if (this.isGameWon()) {
       return;
+    }
+    if (this.board.isNextStepToWall(this.snake.body[0])) {
+      this.teleportSnake();
     }
     if (this.board.isHeadOnFood()) {
       this.snake.increaseBody();
@@ -110,6 +114,27 @@ class Game {
       clearInterval(this.tickIdentifier);
       this.setMessage('Вы проиграли');
       return true;
+    }
+  }
+
+  /**
+   * Метод перемещяет голову змеи на противоположную
+   * сторону, при перегоде через стену
+   */
+  teleportSnake() {
+    switch (this.snake.direction) {
+      case 'down':
+        this.snake.body[0].y = 1;
+        break;
+      case 'up':
+        this.snake.body[0].y = this.settings.rowsCount;
+        break;
+      case 'left':
+        this.snake.body[0].x = this.settings.colsCount;
+        break;
+      case 'right':
+        this.snake.body[0].x = 1;
+        break;
     }
   }
 
