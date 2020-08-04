@@ -110,4 +110,15 @@ class Board {
   isHeadOnFood() {
     return this.boardEl.querySelector('.food').classList.contains('snakeBody');
   }
+
+  isHeadOnBody() {
+    let snakeHead = this.snake.body[0];
+    let snakeBody = this.snake.body;
+    for (let i = 1; i < snakeBody.length; ++i) {
+      if (snakeHead.y === snakeBody[i].y && snakeHead.x === snakeBody[i].x) {
+        return true;
+      }
+    }
+    return false;
+  }
 }

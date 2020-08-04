@@ -106,7 +106,11 @@ class Game {
    * true, иначе false.
    */
   isGameLost() {
-    return false;
+    if (this.board.isHeadOnBody()) {
+      clearInterval(this.tickIdentifier);
+      this.setMessage('Вы проиграли');
+      return true;
+    }
   }
 
   /**
